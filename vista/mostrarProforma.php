@@ -1,3 +1,8 @@
+<?php
+include '../global/config.php';
+include '../global/conexion.php';
+include 'proforma.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -47,7 +52,7 @@
         <div class="container-xxl position-relative p-0">
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4 px-lg-5 py-3 py-lg-0">
                 <a href="" class="navbar-brand p-0">
-                    <h1 class="text-primary m-0"><i class="fa fa-utensils me-3"></i>Restoran</h1>
+                    <h1 class="text-primary m-0"><i class="fa fa-utensils me-3"></i>Sabor a Charapita</h1>
                     <!-- <img src="../img/logo.png" alt="Logo"> -->
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
@@ -58,13 +63,13 @@
                         <a href="../vista/index.php" class="nav-item nav-link">Home</a>
                         <a href="../vista/about.php" class="nav-item nav-link">About</a>
                         <a href="../vista/service.php" class="nav-item nav-link">Service</a>
-                        <a href="../vista/menu.php" class="nav-item nav-link">Menu</a>
+                        <a href="../vista/menu.php" class="nav-item nav-link active">Menu</a>
                         <div class="nav-item dropdown">
-                            <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown">Pages</a>
+                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
                             <div class="dropdown-menu m-0">
                                 <a href="../vista/booking.php" class="dropdown-item">Booking</a>
                                 <a href="../vista/team.php" class="dropdown-item">Our Team</a>
-                                <a href="../vista/testimonial.php" class="dropdown-item active">Testimonial</a>
+                                <a href="../vista/testimonial.php" class="dropdown-item">Testimonial</a>
                             </div>
                         </div>
                         <a href="../vista/contact.php" class="nav-item nav-link">Contact</a>
@@ -75,12 +80,12 @@
 
             <div class="container-xxl py-5 bg-dark hero-header mb-5">
                 <div class="container text-center my-5 pt-5 pb-4">
-                    <h1 class="display-3 text-white mb-3 animated slideInDown">Testimonial</h1>
+                    <h1 class="display-3 text-white mb-3 animated slideInDown">Proforma</h1>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb justify-content-center text-uppercase">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item"><a href="#">Pages</a></li>
-                            <li class="breadcrumb-item text-white active" aria-current="page">Testimonial</li>
+                            <li class="breadcrumb-item"><a href="#">Inicio</a></li>
+                            <li class="breadcrumb-item"><a href="#">Menú</a></li>
+                            <li class="breadcrumb-item text-white active" aria-current="page">Proforma</li>
                         </ol>
                     </nav>
                 </div>
@@ -89,68 +94,66 @@
         <!-- Navbar & Hero End -->
 
 
-        <!-- Testimonial Start -->
-        <div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
+        <!-- Menu Start -->
+            
+        
+        <div class="container-xxl py-5">
             <div class="container">
-                <div class="text-center">
-                    <h5 class="section-title ff-secondary text-center text-primary fw-normal">Testimonial</h5>
-                    <h1 class="mb-5">Our Clients Say!!!</h1>
+                <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+                    <h5 class="section-title ff-secondary text-center text-primary fw-normal">Menú</h5>
+                    <h1 class="mb-5">Lista de Platillos Agregados</h1>
+                    <?php if(!empty($_SESSION['PROFORMA'])) { ?>
+                    <table class="table table-light table-bordered">
+                        <tr>
+                            <th width="40%" class="text-start">Descripción</th>
+                            <th width="15%" class="text-center">Cantidad</th>
+                            <th width="20%" class="text-center">Precio</th>
+                            <th width="20%" class="text-center">Total</th>
+                            <th width="5%">--</th>
+                        </tr>
+                        <?php $total=0;?>
+                        <?php foreach($_SESSION['PROFORMA'] as $indice=>$platillo){?>
+                        <tr>
+                            <td width="40%" class="text-start"><?php echo $platillo['NOMBRE']?></td>
+                            <td width="15%" class="text-center"><?php echo $platillo['CANTIDAD']?></td>
+                            <td width="20%" class="text-center">S/.<?php echo $platillo['PRECIO']?></td>
+                            <td width="20%" class="text-center">S/.<?php echo number_format($platillo['PRECIO']*$platillo['CANTIDAD'],2); ?></td>
+                            <td width="5%">
+                            <form action="" method="post">
+                            <input type="hidden" name="id" id="id" value="<?php echo openssl_encrypt($platillo['ID'],COD,KEY);?>">
+                                <button 
+                                class="btn btn-danger" 
+                                type="submit"
+                                name="btnAccion"
+                                value="Eliminar"
+                                >Eliminar</button>
+                            </form>
+                            </td>
+                        </tr>
+                        <?php $total=$total+($platillo['PRECIO']*$platillo['CANTIDAD']);?>
+                        <?php } ?>   
+                        <tr>
+                            <td colspan="3" align="right"><h3>Total</h3></td>
+                            <td align="right"><h3>S/.<?php echo number_format($total,2);?></h3></td>
+                            <td></td>
+                        </tr>
+                    </table>
+                    <?php } else{ ?>
+                        <div class="alert alert-success">
+                            No hay platillos agregados...
+                        </div>
+                    <?php } ?>   
                 </div>
-                <div class="owl-carousel testimonial-carousel">
-                    <div class="testimonial-item bg-transparent border rounded p-4">
-                        <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
-                        <p>Dolor et eos labore, stet justo sed est sed. Diam sed sed dolor stet amet eirmod eos labore diam</p>
-                        <div class="d-flex align-items-center">
-                            <img class="img-fluid flex-shrink-0 rounded-circle" src="../img/testimonial-1.jpg" style="width: 50px; height: 50px;">
-                            <div class="ps-3">
-                                <h5 class="mb-1">Client Name</h5>
-                                <small>Profession</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="testimonial-item bg-transparent border rounded p-4">
-                        <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
-                        <p>Dolor et eos labore, stet justo sed est sed. Diam sed sed dolor stet amet eirmod eos labore diam</p>
-                        <div class="d-flex align-items-center">
-                            <img class="img-fluid flex-shrink-0 rounded-circle" src="../img/testimonial-2.jpg" style="width: 50px; height: 50px;">
-                            <div class="ps-3">
-                                <h5 class="mb-1">Client Name</h5>
-                                <small>Profession</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="testimonial-item bg-transparent border rounded p-4">
-                        <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
-                        <p>Dolor et eos labore, stet justo sed est sed. Diam sed sed dolor stet amet eirmod eos labore diam</p>
-                        <div class="d-flex align-items-center">
-                            <img class="img-fluid flex-shrink-0 rounded-circle" src="../img/testimonial-3.jpg" style="width: 50px; height: 50px;">
-                            <div class="ps-3">
-                                <h5 class="mb-1">Client Name</h5>
-                                <small>Profession</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="testimonial-item bg-transparent border rounded p-4">
-                        <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
-                        <p>Dolor et eos labore, stet justo sed est sed. Diam sed sed dolor stet amet eirmod eos labore diam</p>
-                        <div class="d-flex align-items-center">
-                            <img class="img-fluid flex-shrink-0 rounded-circle" src="../img/testimonial-4.jpg" style="width: 50px; height: 50px;">
-                            <div class="ps-3">
-                                <h5 class="mb-1">Client Name</h5>
-                                <small>Profession</small>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
-        </div>
-        <!-- Testimonial End -->
+  
+        <!-- Menu End -->
         
 
         <!-- Footer Start -->
         <?php
-include '../templates/pie.php';
-?>
+        include '../templates/pie.php';
+        ?>
         <!-- Footer End -->
 
 
