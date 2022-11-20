@@ -96,21 +96,21 @@ include 'proforma.php';
 
         <?php 
     $sentencia=$pdo->prepare("SELECT id_platillos, precio_p, imagen, nombre_p, descripcion_p, platillos.estado, nombre_c FROM platillos INNER JOIN categoria_p 
-    on platillos.id_categoria=categoria_p.id_categoria WHERE platillos.id_categoria=1");
+    on platillos.id_categoria=categoria_p.id_categoria WHERE platillos.id_categoria=1 and platillos.estado=1");
     $sentencia->execute();
     $lista_platillos1=$sentencia->fetchAll(PDO::FETCH_ASSOC);
     //print_r($lista_platillos1)
 ?>
 <?php 
     $sentencia=$pdo->prepare("SELECT id_platillos, precio_p, imagen, nombre_p, descripcion_p, platillos.estado, nombre_c FROM platillos INNER JOIN categoria_p 
-    on platillos.id_categoria=categoria_p.id_categoria WHERE platillos.id_categoria=2");
+    on platillos.id_categoria=categoria_p.id_categoria WHERE platillos.id_categoria=2 and platillos.estado=1");
     $sentencia->execute();
     $lista_platillos2=$sentencia->fetchAll(PDO::FETCH_ASSOC);
     //print_r($lista_platillos2)
 ?>
 <?php 
     $sentencia=$pdo->prepare("SELECT id_platillos, precio_p, imagen, nombre_p, descripcion_p, platillos.estado, nombre_c FROM platillos INNER JOIN categoria_p 
-    on platillos.id_categoria=categoria_p.id_categoria WHERE platillos.id_categoria=3");
+    on platillos.id_categoria=categoria_p.id_categoria WHERE platillos.id_categoria=3 and platillos.estado=1");
     $sentencia->execute();
     $lista_platillos3=$sentencia->fetchAll(PDO::FETCH_ASSOC);
     //print_r($lista_platillos3)
